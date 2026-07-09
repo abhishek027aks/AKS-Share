@@ -8,6 +8,9 @@ import '../../shared/widgets/device_status_card.dart';
 import '../../shared/widgets/storage_overview_card.dart';
 import '../../shared/widgets/recent_transfers_card.dart';
 import '../../shared/widgets/clipboard_panel.dart';
+// Naye widgets ke imports
+import '../../shared/widgets/tools_features_card.dart'; 
+import '../../shared/widgets/quick_notes_panel.dart'; 
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -49,6 +52,7 @@ class HomeScreen extends StatelessWidget {
 
                           const SizedBox(height: 28),
 
+                          // Pehli Row (Device Status, Storage, Transfers)
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -74,6 +78,27 @@ class HomeScreen extends StatelessWidget {
 
                           const SizedBox(height: 28),
 
+                          // Nayi Row (Tools Features aur Quick Notes)
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+
+                              Expanded(
+                                flex: 2,
+                                child: ToolsFeaturesCard(),
+                              ),
+
+                              const SizedBox(width: 18),
+
+                              const Expanded(
+                                child: QuickNotesPanel(),
+                              ),
+
+                            ],
+                          ),
+
+                          const SizedBox(height: 28),
+
                         ],
                       ),
                     ),
@@ -84,10 +109,7 @@ class HomeScreen extends StatelessWidget {
           ),
 
           // RIGHT PANEL
-          SizedBox(
-            width: 340,
-            child: ClipboardPanel(),
-          ),
+          const ClipboardPanel(),
 
         ],
       ),
