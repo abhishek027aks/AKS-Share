@@ -1,3 +1,12 @@
+<p align="center">
+  <img src="assets/banner/github-banner.png" alt="AKS Share Banner">
+</p>
+
+<h1 align="center">🚀 AKS Share</h1>
+
+<p align="center">
+One App. All Your Devices.
+</p>
 <div align="center">
 
 # 🚀 AKS Share
