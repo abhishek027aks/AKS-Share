@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'app/app.dart';
+import 'features/devices/provider/device_provider.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(const AKSShareApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => DeviceProvider(),
+        ),
+      ],
+      child: const AKSShareApp(),
+    ),
+  );
 }

@@ -8,9 +8,8 @@ import '../../shared/widgets/device_status_card.dart';
 import '../../shared/widgets/storage_overview_card.dart';
 import '../../shared/widgets/recent_transfers_card.dart';
 import '../../shared/widgets/clipboard_panel.dart';
-// Naye widgets ke imports
-import '../../shared/widgets/tools_features_card.dart'; 
-import '../../shared/widgets/quick_notes_panel.dart'; 
+import '../../shared/widgets/tools_features_card.dart';
+import '../../shared/widgets/quick_notes_panel.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -20,98 +19,122 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFF0B1120),
 
-      body: Row(
-        children: [
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final showClipboard = constraints.maxWidth >= 1380;
 
-          // LEFT SIDEBAR
-          const AppSidebar(),
+          final double cardWidth = constraints.maxWidth >= 1700
+              ? 360
+              : constraints.maxWidth >= 1500
+                  ? 340
+                  : constraints.maxWidth >= 1200
+                      ? 320
+                      : double.infinity;
 
-          // CENTER CONTENT
-          Expanded(
-            child: Column(
-              children: [
+          final double toolsWidth = constraints.maxWidth >= 1700
+              ? 720
+              : constraints.maxWidth >= 1500
+                  ? 680
+                  : double.infinity;
 
-                const TopBar(),
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-                Expanded(
-                  child: Container(
-                    color: const Color(0xFF0B1120),
+              const AppSidebar(),
 
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(24),
+              Expanded(
+                child: Column(
+                  children: [
 
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                    const TopBar(),
 
-                          const WelcomeCard(),
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          gradient: RadialGradient(
+                            center: Alignment(0.75, -0.2),
+                            radius: 1.1,
+                            colors: [
+                              Color(0xFF11214A),
+                              Color(0xFF0B1120),
+                            ],
+                          ),
+                        ),
+                        child: SingleChildScrollView(
+                          padding: const EdgeInsets.fromLTRB(22, 20, 22, 28),
 
-                          const SizedBox(height: 28),
-
-                          const QuickActionsGrid(),
-
-                          const SizedBox(height: 28),
-
-                          // Pehli Row (Device Status, Storage, Transfers)
-                          Row(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
 
-                              Expanded(
-                                child: DeviceStatusCard(),
+                              const WelcomeCard(),
+
+                              const SizedBox(height: 20),
+
+                              const QuickActionsGrid(),
+
+                              const SizedBox(height: 20),
+
+                              Wrap(
+                                spacing: 16,
+                                runSpacing: 16,
+                                children: [
+
+                                  SizedBox(
+                                    width: cardWidth,
+                                    child: const DeviceStatusCard(),
+                                  ),
+
+                                  SizedBox(
+                                    width: cardWidth,
+                                    child: const StorageOverviewCard(),
+                                  ),
+
+                                  SizedBox(
+                                    width: cardWidth,
+                                    child: const RecentTransfersCard(),
+                                  ),
+                                ],
                               ),
 
-                              const SizedBox(width: 18),
+                              const SizedBox(height: 20),
 
-                              Expanded(
-                                child: StorageOverviewCard(),
+                              Wrap(
+                                spacing: 16,
+                                runSpacing: 16,
+                                children: [
+
+                                  SizedBox(
+                                    width: toolsWidth,
+                                    child: const ToolsFeaturesCard(),
+                                  ),
+
+                                  SizedBox(
+                                    width: cardWidth,
+                                    child: const QuickNotesPanel(),
+                                  ),
+                                ],
                               ),
 
-                              const SizedBox(width: 18),
-
-                              Expanded(
-                                child: RecentTransfersCard(),
-                              ),
-
+                              const SizedBox(height: 20),
                             ],
                           ),
-
-                          const SizedBox(height: 28),
-
-                          // Nayi Row (Tools Features aur Quick Notes)
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-
-                              Expanded(
-                                flex: 2,
-                                child: ToolsFeaturesCard(),
-                              ),
-
-                              const SizedBox(width: 18),
-
-                              const Expanded(
-                                child: QuickNotesPanel(),
-                              ),
-
-                            ],
-                          ),
-
-                          const SizedBox(height: 28),
-
-                        ],
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
 
-          // RIGHT PANEL
-          const ClipboardPanel(),
-
-        ],
+              if (showClipboard)
+                const SizedBox(
+                  width: 330,
+                  child: ClipboardPanel(),
+                ),
+            ],
+          );
+        },
       ),
     );
   }

@@ -6,137 +6,187 @@ class AppSidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 240,
-      color: const Color(0xFF111827),
+      width: 254,
+      decoration: const BoxDecoration(
+        color: Color(0xFF071225),
+        border: Border(
+          right: BorderSide(color: Color(0x1AFFFFFF)),
+        ),
+      ),
       child: Column(
         children: [
-
-          const SizedBox(height: 20),
-
-          // Logo
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.devices_rounded,
-                color: Color(0xFF3B82F6),
-                size: 34,
-              ),
-              SizedBox(width: 10),
-              Text(
-                "AKS",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+          const SizedBox(height: 24),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 18),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.devices_other_rounded,
+                  color: Color(0xFF22D3EE),
+                  size: 38,
                 ),
-              ),
-              Text(
-                " Share",
-                style: TextStyle(
-                  color: Color(0xFF22C55E),
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 30),
-
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: const [
-
-                SidebarItem(
-                  icon: Icons.dashboard_rounded,
-                  title: "Dashboard",
-                  selected: true,
-                ),
-
-                SidebarItem(
-                  icon: Icons.folder_rounded,
-                  title: "File Transfer",
-                ),
-
-                SidebarItem(
-                  icon: Icons.content_paste_rounded,
-                  title: "Clipboard",
-                ),
-
-                SidebarItem(
-                  icon: Icons.sync_rounded,
-                  title: "Smart Sync",
-                ),
-
-                SidebarItem(
-                  icon: Icons.phone_android,
-                  title: "Phone Manager",
-                ),
-
-                SidebarItem(
-                  icon: Icons.computer,
-                  title: "PC Manager",
-                ),
-
-                SidebarItem(
-                  icon: Icons.camera_alt,
-                  title: "Camera Tools",
-                ),
-
-                SidebarItem(
-                  icon: Icons.notifications,
-                  title: "Notification",
-                ),
-
-                SidebarItem(
-                  icon: Icons.note,
-                  title: "Notes",
-                ),
-
-                SidebarItem(
-                  icon: Icons.picture_as_pdf,
-                  title: "Documents",
-                ),
-
-                SidebarItem(
-                  icon: Icons.security,
-                  title: "Security",
-                ),
-
-                SidebarItem(
-                  icon: Icons.settings,
-                  title: "Settings",
+                SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'AKS ',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            TextSpan(
+                              text: 'Share',
+                              style: TextStyle(color: Color(0xFF22C55E)),
+                            ),
+                          ],
+                        ),
+                        style: TextStyle(
+                          fontSize: 27,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        'All in One Device Companion',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-
-          const Divider(color: Colors.white10),
-
-          const Padding(
-            padding: EdgeInsets.all(20),
+          const SizedBox(height: 26),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              children: const [
+                SidebarItem(
+                  icon: Icons.dashboard_rounded,
+                  title: 'Dashboard',
+                  selected: true,
+                ),
+                SidebarItem(
+                  icon: Icons.description_outlined,
+                  title: 'File Transfer',
+                ),
+                SidebarItem(
+                  icon: Icons.content_paste_rounded,
+                  title: 'Clipboard',
+                ),
+                SidebarItem(
+                  icon: Icons.sync_rounded,
+                  title: 'Smart Sync',
+                ),
+                SidebarItem(
+                  icon: Icons.phone_android,
+                  title: 'Phone Manager',
+                ),
+                SidebarItem(
+                  icon: Icons.computer,
+                  title: 'PC Manager',
+                ),
+                SidebarItem(
+                  icon: Icons.camera_alt_outlined,
+                  title: 'Camera Tools',
+                ),
+                SidebarItem(
+                  icon: Icons.notifications_none_rounded,
+                  title: 'Notification Center',
+                ),
+                SidebarItem(
+                  icon: Icons.note_alt_outlined,
+                  title: 'Notes & Workspace',
+                ),
+                SidebarItem(
+                  icon: Icons.picture_as_pdf_outlined,
+                  title: 'Document Tools',
+                ),
+                SidebarItem(
+                  icon: Icons.security_rounded,
+                  title: 'Security',
+                ),
+                SidebarItem(
+                  icon: Icons.settings_outlined,
+                  title: 'Settings',
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(14, 12, 14, 18),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: const Color(0xFF0B1A33),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.white10),
+            ),
             child: Column(
               children: [
-
-                Text(
-                  "AKS Share",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                const Row(
+                  children: [
+                    Icon(
+                      Icons.wifi_rounded,
+                      color: Color(0xFF22D3EE),
+                      size: 34,
+                    ),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Offline Mode',
+                            style: TextStyle(
+                              color: Color(0xFF22C55E),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          SizedBox(height: 3),
+                          Text(
+                            'Works on Local Network',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: null,
+                    style: OutlinedButton.styleFrom(
+                      disabledForegroundColor: const Color(0xFF8B5CF6),
+                      side: const BorderSide(color: Color(0xFF1E2B52)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: const Text('Hotspot Mode'),
                   ),
                 ),
-
-                SizedBox(height: 5),
-
-                Text(
-                  "v0.1.0 Alpha",
+                const SizedBox(height: 20),
+                const Text(
+                  'AKS Share v1.0.0',
                   style: TextStyle(
                     color: Colors.white54,
                     fontSize: 12,
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -161,25 +211,27 @@ class SidebarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 4,
-      ),
+      margin: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
-        color: selected
-            ? const Color(0xFF2563EB)
-            : Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
+        color: selected ? const Color(0xFF1D4ED8) : Colors.transparent,
+        borderRadius: BorderRadius.circular(8),
       ),
       child: ListTile(
+        dense: true,
+        minLeadingWidth: 24,
         leading: Icon(
           icon,
-          color: Colors.white,
+          color: selected ? Colors.white : Colors.white70,
+          size: 23,
         ),
         title: Text(
           title,
-          style: const TextStyle(
-            color: Colors.white,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: selected ? Colors.white : Colors.white.withOpacity(0.88),
+            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+            fontSize: 15,
           ),
         ),
       ),
