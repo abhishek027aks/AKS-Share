@@ -11,16 +11,17 @@ class DeviceStatusCard extends StatelessWidget {
     final provider = context.watch<DeviceProvider>();
     final device = provider.device;
     final isConnected = device.isConnected;
-    final statusText = provider.errorMessage ??
+    final statusText =
+        provider.errorMessage ??
         (isConnected
             ? '${device.connectionType} connected'
-            : 'Waiting for device...');
+            : device.connectionStatus);
     final titleText = isConnected ? device.name : 'No Device Connected';
     final accentColor = isConnected
         ? const Color(0xFF22C55E)
         : provider.errorMessage == null
-            ? const Color(0xFF2563EB)
-            : const Color(0xFFEF4444);
+        ? const Color(0xFF2563EB)
+        : const Color(0xFFEF4444);
 
     return Container(
       height: 235,
@@ -28,9 +29,7 @@ class DeviceStatusCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF111827),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Colors.white10,
-        ),
+        border: Border.all(color: Colors.white10),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,9 +79,7 @@ class DeviceStatusCard extends StatelessWidget {
                       statusText,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white54,
-                      ),
+                      style: const TextStyle(color: Colors.white54),
                     ),
                   ],
                 ),
@@ -106,6 +103,14 @@ class DeviceStatusCard extends StatelessWidget {
                   icon: Icons.battery_full_rounded,
                   label: '${device.battery}%',
                 ),
+                if (device.ipAddress.isNotEmpty)
+                  _InfoChip(icon: Icons.wifi_rounded, label: device.ipAddress),
+                if (device.totalStorage > 0)
+                  _InfoChip(
+                    icon: Icons.storage_rounded,
+                    label:
+                        '${device.usedStorage.toStringAsFixed(1)} / ${device.totalStorage.toStringAsFixed(1)} GB',
+                  ),
               ],
             ),
           ],
@@ -145,10 +150,7 @@ class _InfoChip extends StatelessWidget {
   final IconData icon;
   final String label;
 
-  const _InfoChip({
-    required this.icon,
-    required this.label,
-  });
+  const _InfoChip({required this.icon, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -162,18 +164,11 @@ class _InfoChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            size: 15,
-            color: Colors.white70,
-          ),
+          Icon(icon, size: 15, color: Colors.white70),
           const SizedBox(width: 6),
           Text(
             label,
-            style: const TextStyle(
-              color: Colors.white70,
-              fontSize: 12,
-            ),
+            style: const TextStyle(color: Colors.white70, fontSize: 12),
           ),
         ],
       ),

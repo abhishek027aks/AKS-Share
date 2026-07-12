@@ -1,15 +1,16 @@
+import 'device_connection_type.dart';
+import 'device_status.dart';
+
 class DeviceModel {
   final String id;
   final String name;
   final String brand;
   final String model;
-  final String androidVersion; // Conflict resolve karne ke liye wapas androidVersion
-  
-  final bool isConnected;
-  final bool isUsb;
-  final bool isWifi;
+  final String androidVersion;
+  final DeviceStatus status;
+  final DeviceConnectionType connectionTypeValue;
   final String ipAddress;
-  
+
   final int battery;
   final double totalStorage;
   final double usedStorage;
@@ -20,9 +21,8 @@ class DeviceModel {
     required this.brand,
     required this.model,
     required this.androidVersion,
-    required this.isConnected,
-    required this.isUsb,
-    required this.isWifi,
+    required this.status,
+    required this.connectionTypeValue,
     required this.ipAddress,
     required this.battery,
     required this.totalStorage,
@@ -30,28 +30,21 @@ class DeviceModel {
   });
 
   double get freeStorage => totalStorage - usedStorage;
-  String get connectionStatus => isConnected ? "Connected" : "Disconnected";
-  String get connectionType {
-    if (!isConnected) return "None";
-    if (isUsb) return "USB";
-    if (isWifi) return "Wi-Fi";
-    return "Unknown";
-  }
+  bool get isConnected => status == DeviceStatus.connected;
+  bool get isUsb => connectionTypeValue == DeviceConnectionType.usb;
+  bool get isWifi => connectionTypeValue == DeviceConnectionType.wifi;
+  String get connectionStatus => status.label;
+  String get connectionType => connectionTypeValue.label;
 
-  factory DeviceModel.empty() {
-    return const DeviceModel(
-      id: "",
-      name: "No Device Connected",
-      brand: "",
-      model: "",
-      androidVersion: "",
-      isConnected: false,
-      isUsb: false,
-      isWifi: false,
-      ipAddress: "",
-      battery: 0,
-      totalStorage: 0.0,
-      usedStorage: 0.0,
-    );
-  }
+  const DeviceModel.empty({this.status = DeviceStatus.disconnected})
+    : id = '',
+      name = 'No Device Connected',
+      brand = '',
+      model = '',
+      androidVersion = '',
+      connectionTypeValue = DeviceConnectionType.none,
+      ipAddress = '',
+      battery = 0,
+      totalStorage = 0.0,
+      usedStorage = 0.0;
 }

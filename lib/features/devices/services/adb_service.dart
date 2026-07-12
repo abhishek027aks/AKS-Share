@@ -31,6 +31,18 @@ class AdbService {
     }
   }
 
+  static Future<bool> hasUnauthorizedDevice() async {
+    try {
+      final result = await Process.run("adb", ["devices"]);
+      if (result.exitCode != 0) return false;
+
+      final lines = result.stdout.toString().split("\n");
+      return lines.any((line) => line.contains("\tunauthorized"));
+    } catch (_) {
+      return false;
+    }
+  }
+
   /// Execute adb shell command
   static Future<String> shell(String deviceId, String command) async {
     try {
@@ -75,7 +87,7 @@ class AdbService {
   static Future<String> getIpAddress(String deviceId) async {
     final output = await shell(deviceId, "ip route");
     final lines = output.split("\n");
-    
+
     for (final line in lines) {
       if (line.contains("wlan0") && line.contains("src")) {
         // Output format generally: "192.168.1.0/24 dev wlan0 ... src 192.168.1.5"
@@ -96,15 +108,17 @@ class AdbService {
       // 'df -h /data' storage info human-readable format me deta hai (G/M)
       final output = await shell(deviceId, "df -h /data");
       final lines = output.split("\n");
-      
+
       if (lines.length > 1) {
         // Line 1 contains the actual data values
         final dataLine = lines[1].trim().replaceAll(RegExp(r'\s+'), ' ');
         final parts = dataLine.split(' ');
-        
+
         if (parts.length >= 3) {
           double parseSize(String sizeStr) {
-            final val = double.tryParse(sizeStr.replaceAll(RegExp(r'[a-zA-Z]'), '')) ?? 0.0;
+            final val =
+                double.tryParse(sizeStr.replaceAll(RegExp(r'[a-zA-Z]'), '')) ??
+                0.0;
             if (sizeStr.toUpperCase().contains('T')) return val * 1024;
             if (sizeStr.toUpperCase().contains('M')) return val / 1024;
             return val; // Default is GB
@@ -112,12 +126,12 @@ class AdbService {
 
           return {
             'total': parseSize(parts[1]), // Size column
-            'used': parseSize(parts[2]),  // Used column
+            'used': parseSize(parts[2]), // Used column
           };
         }
       }
     } catch (_) {}
-    
+
     return {'total': 0.0, 'used': 0.0};
   }
 }

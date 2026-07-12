@@ -1,35 +1,56 @@
 import '../models/device_model.dart';
+import '../models/device_connection_type.dart';
+import '../models/device_status.dart';
 import 'adb_service.dart';
 
 class DeviceConnectionService {
-  // Static hata diya hai taaki Provider ke saath asani se use ho sake
   Future<DeviceModel> getCurrentDevice() async {
+    final isAdbInstalled = await AdbService.isAdbInstalled();
+
+    if (!isAdbInstalled) {
+      return const DeviceModel.empty(status: DeviceStatus.adbMissing);
+    }
+
     final devices = await AdbService.getConnectedDevices();
 
     if (devices.isEmpty) {
-      return DeviceModel.empty();
+      final hasUnauthorizedDevice = await AdbService.hasUnauthorizedDevice();
+      return DeviceModel.empty(
+        status: hasUnauthorizedDevice
+            ? DeviceStatus.unauthorized
+            : DeviceStatus.disconnected,
+      );
     }
 
     final id = devices.first;
 
-    final model = await AdbService.getModel(id);
-    final brand = await AdbService.getBrand(id);
-    final android = await AdbService.getAndroidVersion(id);
+    final results = await Future.wait([
+      AdbService.getModel(id),
+      AdbService.getBrand(id),
+      AdbService.getAndroidVersion(id),
+      AdbService.getIpAddress(id),
+    ]);
     final battery = await AdbService.getBattery(id);
+    final storage = await AdbService.getStorageInfo(id);
+
+    final model = results[0];
+    final brand = results[1];
+    final android = results[2];
+    final ipAddress = results[3];
+    final deviceName = '$brand $model'.trim();
 
     return DeviceModel(
       id: id,
-      name: "$brand $model".trim(), // Brand aur model mila kar ek proper naam (e.g. "Redmi Note 12 Pro")
+      name: deviceName.isEmpty ? id : deviceName,
       model: model,
       brand: brand,
       androidVersion: android,
+      status: DeviceStatus.connected,
+      connectionTypeValue: DeviceConnectionType.usb,
       battery: battery,
-      isConnected: true,
-      isUsb: true, // Abhi ke liye default USB true rakha hai
-      isWifi: false,
-      ipAddress: "",
-      totalStorage: 0, 
-      usedStorage: 0,
+      ipAddress: ipAddress == 'Unknown' ? '' : ipAddress,
+      totalStorage: storage['total'] ?? 0.0,
+      usedStorage: storage['used'] ?? 0.0,
     );
   }
 }
