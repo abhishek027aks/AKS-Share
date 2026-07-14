@@ -11,7 +11,7 @@ class QuickActionsGrid extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: const Color(0xFF0D1A30).withOpacity(0.92),
+        color: const Color(0xFF0D1A30).withValues(alpha: 0.92),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.white10),
       ),

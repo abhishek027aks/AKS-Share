@@ -60,7 +60,7 @@ class QuickNotesPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withOpacity(.18),
+        color: color.withValues(alpha: .18),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: Colors.white10),
       ),

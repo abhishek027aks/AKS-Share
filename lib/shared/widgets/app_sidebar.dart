@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../../app/routes.dart';
+
 class AppSidebar extends StatelessWidget {
   const AppSidebar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final currentRoute =
+        ModalRoute.of(context)?.settings.name ?? AppRoutes.home;
+
     return Container(
       width: 254,
       decoration: const BoxDecoration(
         color: Color(0xFF071225),
-        border: Border(
-          right: BorderSide(color: Color(0x1AFFFFFF)),
-        ),
+        border: Border(right: BorderSide(color: Color(0x1AFFFFFF))),
       ),
       child: Column(
         children: [
@@ -69,53 +72,57 @@ class AppSidebar extends StatelessWidget {
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              children: const [
+              children: [
                 SidebarItem(
                   icon: Icons.dashboard_rounded,
                   title: 'Dashboard',
-                  selected: true,
+                  routeName: AppRoutes.home,
+                  selected: currentRoute == AppRoutes.home,
                 ),
                 SidebarItem(
+                  icon: Icons.devices_rounded,
+                  title: 'Device Manager',
+                  routeName: AppRoutes.devices,
+                  selected: currentRoute == AppRoutes.devices,
+                ),
+                const SidebarItem(
                   icon: Icons.description_outlined,
                   title: 'File Transfer',
                 ),
-                SidebarItem(
+                const SidebarItem(
                   icon: Icons.content_paste_rounded,
                   title: 'Clipboard',
                 ),
-                SidebarItem(
+                const SidebarItem(
                   icon: Icons.sync_rounded,
                   title: 'Smart Sync',
                 ),
-                SidebarItem(
+                const SidebarItem(
                   icon: Icons.phone_android,
                   title: 'Phone Manager',
                 ),
-                SidebarItem(
-                  icon: Icons.computer,
-                  title: 'PC Manager',
-                ),
-                SidebarItem(
+                const SidebarItem(icon: Icons.computer, title: 'PC Manager'),
+                const SidebarItem(
                   icon: Icons.camera_alt_outlined,
                   title: 'Camera Tools',
                 ),
-                SidebarItem(
+                const SidebarItem(
                   icon: Icons.notifications_none_rounded,
                   title: 'Notification Center',
                 ),
-                SidebarItem(
+                const SidebarItem(
                   icon: Icons.note_alt_outlined,
                   title: 'Notes & Workspace',
                 ),
-                SidebarItem(
+                const SidebarItem(
                   icon: Icons.picture_as_pdf_outlined,
                   title: 'Document Tools',
                 ),
-                SidebarItem(
+                const SidebarItem(
                   icon: Icons.security_rounded,
                   title: 'Security',
                 ),
-                SidebarItem(
+                const SidebarItem(
                   icon: Icons.settings_outlined,
                   title: 'Settings',
                 ),
@@ -182,10 +189,7 @@ class AppSidebar extends StatelessWidget {
                 const SizedBox(height: 20),
                 const Text(
                   'AKS Share v1.0.0',
-                  style: TextStyle(
-                    color: Colors.white54,
-                    fontSize: 12,
-                  ),
+                  style: TextStyle(color: Colors.white54, fontSize: 12),
                 ),
               ],
             ),
@@ -199,12 +203,14 @@ class AppSidebar extends StatelessWidget {
 class SidebarItem extends StatelessWidget {
   final IconData icon;
   final String title;
+  final String? routeName;
   final bool selected;
 
   const SidebarItem({
     super.key,
     required this.icon,
     required this.title,
+    this.routeName,
     this.selected = false,
   });
 
@@ -216,22 +222,30 @@ class SidebarItem extends StatelessWidget {
         color: selected ? const Color(0xFF1D4ED8) : Colors.transparent,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: ListTile(
-        dense: true,
-        minLeadingWidth: 24,
-        leading: Icon(
-          icon,
-          color: selected ? Colors.white : Colors.white70,
-          size: 23,
-        ),
-        title: Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            color: selected ? Colors.white : Colors.white.withOpacity(0.88),
-            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-            fontSize: 15,
+      child: Material(
+        color: Colors.transparent,
+        child: ListTile(
+          dense: true,
+          minLeadingWidth: 24,
+          onTap: routeName == null || selected
+              ? null
+              : () => Navigator.of(context).pushReplacementNamed(routeName!),
+          leading: Icon(
+            icon,
+            color: selected ? Colors.white : Colors.white70,
+            size: 23,
+          ),
+          title: Text(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: selected
+                  ? Colors.white
+                  : Colors.white.withValues(alpha: 0.88),
+              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+              fontSize: 15,
+            ),
           ),
         ),
       ),

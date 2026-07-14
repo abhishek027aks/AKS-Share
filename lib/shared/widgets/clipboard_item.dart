@@ -28,12 +28,8 @@ class ClipboardItem extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 18,
-            backgroundColor: color.withOpacity(.18),
-            child: Icon(
-              icon,
-              color: color,
-              size: 18,
-            ),
+            backgroundColor: color.withValues(alpha: .18),
+            child: Icon(icon, color: color, size: 18),
           ),
 
           const SizedBox(width: 12),
@@ -58,10 +54,7 @@ class ClipboardItem extends StatelessWidget {
                   subtitle,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white54,
-                    fontSize: 12,
-                  ),
+                  style: const TextStyle(color: Colors.white54, fontSize: 12),
                 ),
               ],
             ),

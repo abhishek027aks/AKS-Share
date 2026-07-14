@@ -11,14 +11,11 @@ class ToolsFeaturesCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF111827),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Colors.white10,
-        ),
+        border: Border.all(color: Colors.white10),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           const Text(
             "Tools & Features",
             style: TextStyle(
@@ -37,7 +34,6 @@ class ToolsFeaturesCard extends StatelessWidget {
               mainAxisSpacing: 14,
               physics: const NeverScrollableScrollPhysics(),
               children: const [
-
                 _ToolTile(
                   icon: Icons.camera_alt,
                   title: "Camera",
@@ -97,18 +93,13 @@ class _ToolTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: color.withOpacity(.12),
+        color: color.withValues(alpha: .12),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
-          Icon(
-            icon,
-            color: color,
-            size: 32,
-          ),
+          Icon(icon, color: color, size: 32),
 
           const SizedBox(height: 10),
 
@@ -119,7 +110,6 @@ class _ToolTile extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-
         ],
       ),
     );

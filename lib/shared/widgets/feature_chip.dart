@@ -21,17 +21,13 @@ class FeatureChip extends StatelessWidget {
       height: 66,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: const Color(0xFF0D1A30).withOpacity(0.92),
+        color: const Color(0xFF0D1A30).withValues(alpha: 0.92),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.white10),
       ),
       child: Row(
         children: [
-          Icon(
-            icon,
-            color: color,
-            size: 30,
-          ),
+          Icon(icon, color: color, size: 30),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -53,10 +49,7 @@ class FeatureChip extends StatelessWidget {
                   subtitle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white60,
-                    fontSize: 12,
-                  ),
+                  style: const TextStyle(color: Colors.white60, fontSize: 12),
                 ),
               ],
             ),
