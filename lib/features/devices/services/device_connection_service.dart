@@ -1,22 +1,34 @@
 import '../models/device_model.dart';
 import '../models/device_connection_type.dart';
+import '../models/device_connection_result.dart';
 import '../models/device_status.dart';
-import 'adb_service.dart';
+import 'adb_gateway.dart';
 
 class DeviceConnectionService {
+  final AdbGateway adbGateway;
+
+  const DeviceConnectionService({
+    this.adbGateway = const ProcessAdbGateway(),
+  });
+
   Future<DeviceModel> getCurrentDevice() async {
-    final isAdbInstalled = await AdbService.isAdbInstalled();
+    final result = await scanCurrentDevice();
+    return result.device;
+  }
+
+  Future<DeviceConnectionResult> scanCurrentDevice() async {
+    final isAdbInstalled = await adbGateway.isAdbInstalled();
 
     if (!isAdbInstalled) {
-      return const DeviceModel.empty(status: DeviceStatus.adbMissing);
+      return DeviceConnectionResult.empty(DeviceStatus.adbMissing);
     }
 
-    final devices = await AdbService.getConnectedDevices();
+    final devices = await adbGateway.getConnectedDevices();
 
     if (devices.isEmpty) {
-      final hasUnauthorizedDevice = await AdbService.hasUnauthorizedDevice();
-      return DeviceModel.empty(
-        status: hasUnauthorizedDevice
+      final hasUnauthorizedDevice = await adbGateway.hasUnauthorizedDevice();
+      return DeviceConnectionResult.empty(
+        hasUnauthorizedDevice
             ? DeviceStatus.unauthorized
             : DeviceStatus.disconnected,
       );
@@ -25,13 +37,13 @@ class DeviceConnectionService {
     final id = devices.first;
 
     final results = await Future.wait([
-      AdbService.getModel(id),
-      AdbService.getBrand(id),
-      AdbService.getAndroidVersion(id),
-      AdbService.getIpAddress(id),
+      adbGateway.getModel(id),
+      adbGateway.getBrand(id),
+      adbGateway.getAndroidVersion(id),
+      adbGateway.getIpAddress(id),
     ]);
-    final battery = await AdbService.getBattery(id);
-    final storage = await AdbService.getStorageInfo(id);
+    final battery = await adbGateway.getBattery(id);
+    final storage = await adbGateway.getStorageInfo(id);
 
     final model = results[0];
     final brand = results[1];
@@ -39,7 +51,7 @@ class DeviceConnectionService {
     final ipAddress = results[3];
     final deviceName = '$brand $model'.trim();
 
-    return DeviceModel(
+    final device = DeviceModel(
       id: id,
       name: deviceName.isEmpty ? id : deviceName,
       model: model,
@@ -52,5 +64,7 @@ class DeviceConnectionService {
       totalStorage: storage['total'] ?? 0.0,
       usedStorage: storage['used'] ?? 0.0,
     );
+
+    return DeviceConnectionResult.connected(device);
   }
 }

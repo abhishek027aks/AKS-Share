@@ -13,8 +13,12 @@ class DeviceStatusCard extends StatelessWidget {
     final isConnected = device.isConnected;
     final statusText =
         provider.errorMessage ??
-        (isConnected
+        (provider.isScanning
+            ? 'Scanning for devices...'
+            : isConnected
             ? '${device.connectionType} connected'
+            : provider.hasScanned
+            ? provider.scanMessage
             : device.connectionStatus);
     final titleText = isConnected ? device.name : 'No Device Connected';
     final accentColor = isConnected

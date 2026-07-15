@@ -9,7 +9,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => DeviceProvider(),
+          create: (_) => DeviceProvider(autoScanOnStart: true),
         ),
       ],
       child: const AKSShareApp(),

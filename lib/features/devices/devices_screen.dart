@@ -60,8 +60,20 @@ class DevicesScreen extends StatelessWidget {
                               onPressed: provider.isScanning
                                   ? null
                                   : provider.scanDevices,
-                              icon: const Icon(Icons.usb_rounded),
-                              label: const Text('Scan Devices'),
+                              icon: provider.isScanning
+                                  ? const SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : const Icon(Icons.usb_rounded),
+                              label: Text(
+                                provider.isScanning
+                                    ? 'Scanning'
+                                    : 'Scan Devices',
+                              ),
                             ),
                           ],
                         ),
@@ -75,7 +87,14 @@ class DevicesScreen extends StatelessWidget {
                         _DeviceInfoPanel(
                           title: 'Connection',
                           rows: [
-                            _InfoRow('Status', device.connectionStatus),
+                            _InfoRow(
+                              'Status',
+                              provider.isScanning
+                                  ? 'Scanning'
+                                  : provider.hasScanned
+                                  ? provider.scanMessage
+                                  : device.connectionStatus,
+                            ),
                             _InfoRow('Type', device.connectionType),
                             _InfoRow(
                               'Device ID',
@@ -86,6 +105,12 @@ class DevicesScreen extends StatelessWidget {
                               device.ipAddress.isEmpty
                                   ? '--'
                                   : device.ipAddress,
+                            ),
+                            _InfoRow(
+                              'Last Scan',
+                              provider.lastScannedAt == null
+                                  ? '--'
+                                  : _formatTime(provider.lastScannedAt!),
                             ),
                           ],
                         ),
@@ -129,6 +154,13 @@ class DevicesScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _formatTime(DateTime dateTime) {
+    final hour = dateTime.hour.toString().padLeft(2, '0');
+    final minute = dateTime.minute.toString().padLeft(2, '0');
+    final second = dateTime.second.toString().padLeft(2, '0');
+    return '$hour:$minute:$second';
   }
 }
 
