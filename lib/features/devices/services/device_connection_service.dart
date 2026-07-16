@@ -7,9 +7,7 @@ import 'adb_gateway.dart';
 class DeviceConnectionService {
   final AdbGateway adbGateway;
 
-  const DeviceConnectionService({
-    this.adbGateway = const ProcessAdbGateway(),
-  });
+  const DeviceConnectionService({this.adbGateway = const ProcessAdbGateway()});
 
   Future<DeviceModel> getCurrentDevice() async {
     final result = await scanCurrentDevice();
